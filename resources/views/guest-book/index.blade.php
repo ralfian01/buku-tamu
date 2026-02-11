@@ -11,6 +11,7 @@
             font-family: 'Roboto', sans-serif;
             background-color: #f0ebf8;
             background-image: url("/images/background-1.jpeg");
+            background-size: cover;
             /* Warna latar belakang ungu muda */
             margin: 0;
             padding: 20px 0;
@@ -112,6 +113,22 @@
             border-bottom: 2px solid #673ab7;
         }
 
+        .group-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #673ab7;
+            /* Warna ungu agar senada */
+            margin-top: 15px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Supaya grup pertama tidak ada margin atas berlebih */
+        .group-wrapper:first-child .group-header {
+            margin-top: 0;
+        }
+
         /* Radio Buttons */
         .radio-option {
             display: flex;
@@ -193,7 +210,7 @@
 
         <!-- Form Header -->
         <div class="header-card">
-            <h1 class="header-title">Buku Tamu Bidang Anggaran BKPG</h1>
+            <h1 class="header-title">Buku Tamu Badan Keuangan dan Aset Daerah</h1>
             <!-- ... (Kode header tetap sama) ... -->
         </div>
 
@@ -204,20 +221,20 @@
             <!-- Email -->
             <div class="question-card">
                 <div class="question-title">Email <span class="required-asterisk">*</span></div>
-                <input type="email" name="email" class="input-text" placeholder="Jawaban Anda" value="{{ old('email') }}" required>
+                <input type="email" name="email" class="input-text" placeholder="Isi Email" value="{{ old('email') }}" required>
                 @error('email') <div style="color: red; font-size: 12px; margin-top: 5px;">{{ $message }}</div> @enderror
             </div>
 
             <!-- Nama Lengkap -->
             <div class="question-card">
                 <div class="question-title">Nama Lengkap <span class="required-asterisk">*</span></div>
-                <input type="text" name="full_name" class="input-text" placeholder="Jawaban Anda" value="{{ old('full_name') }}" required>
+                <input type="text" name="full_name" class="input-text" placeholder="Isi Nama Lengkap" value="{{ old('full_name') }}" required>
             </div>
 
             <!-- Jabatan -->
             <div class="question-card">
                 <div class="question-title">Jabatan <span class="required-asterisk">*</span></div>
-                <input type="text" name="position" class="input-text" placeholder="Jawaban Anda" value="{{ old('position') }}" required>
+                <input type="text" name="position" class="input-text" placeholder="Isi Jabatan" value="{{ old('position') }}" required>
             </div>
 
             <!-- Tanggal Berkunjung -->
@@ -229,55 +246,62 @@
             <!-- Asal Instansi -->
             <div class="question-card">
                 <div class="question-title">Asal Instansi / Organisasi / Perusahaan / Yayasan / Kantor / dsb <span class="required-asterisk">*</span></div>
-                <input type="text" name="institution" class="input-text" placeholder="Jawaban Anda" value="{{ old('institution') }}" required>
+                <input type="text" name="institution" class="input-text" placeholder="Isi Instansi" value="{{ old('institution') }}" required>
             </div>
 
             <!-- Pejabat yang dituju -->
             <div class="question-card">
                 <div class="question-title">Pejabat yang dituju <span class="required-asterisk">*</span></div>
 
-                <label class="radio-option">
-                    <input type="radio" name="target_official" value="Kepala Bidang Anggaran" {{ old('target_official') == 'Kepala Bidang Anggaran' ? 'checked' : '' }} required>
-                    <span class="radio-label">Kepala Bidang Anggaran</span>
-                </label>
+                @if(count($officialGroups) > 0)
+                {{-- Loop Luar: Grup (Pimpinan, Koordinator, dst) --}}
+                @foreach($officialGroups as $group)
+                <div class="group-wrapper">
+                    <!-- Menampilkan Nama Grup -->
+                    <div class="group-header">{{ $group['group_name'] }}</div>
 
-                <label class="radio-option">
-                    <input type="radio" name="target_official" value="Kasubid Anggaran Area 1" {{ old('target_official') == 'Kasubid Anggaran Area 1' ? 'checked' : '' }}>
-                    <span class="radio-label">Kasubid Anggaran Area 1</span>
-                </label>
+                    {{-- Loop Dalam: Item Pejabat --}}
+                    @foreach($group['items'] as $official)
+                    <label class="radio-option">
+                        <input
+                            type="radio"
+                            name="target_official"
+                            value="{{ $official['name'] }}"
+                            {{ old('target_official') == $official['name'] ? 'checked' : '' }}
+                            required>
+                        <span class="radio-label">{{ $official['name'] }}</span>
+                    </label>
+                    @endforeach
+                </div>
+                @endforeach
+                @else
+                <p style="color: red; font-style: italic;">Data pejabat tidak tersedia.</p>
+                @endif
 
-                <label class="radio-option">
-                    <input type="radio" name="target_official" value="Kasubid Anggaran Area 2" {{ old('target_official') == 'Kasubid Anggaran Area 2' ? 'checked' : '' }}>
-                    <span class="radio-label">Kasubid Anggaran Area 2</span>
-                </label>
-
-                <label class="radio-option">
-                    <input type="radio" name="target_official" value="Analis Anggaran" {{ old('target_official') == 'Analis Anggaran' ? 'checked' : '' }}>
-                    <span class="radio-label">Analis Anggaran</span>
-                </label>
+                @error('target_official') <div style="color: red; font-size: 12px; margin-top: 5px;">{{ $message }}</div> @enderror
             </div>
 
             <!-- Maksud Kedatangan -->
             <div class="question-card">
                 <div class="question-title">Maksud Kedatangan <span class="required-asterisk">*</span></div>
-                <input type="text" name="purpose" class="input-text" placeholder="Jawaban Anda" value="{{ old('purpose') }}" required>
+                <input type="text" name="purpose" class="input-text" placeholder="Isi maksud" value="{{ old('purpose') }}" required>
             </div>
 
             <!-- Pesan / Kesan -->
             <div class="question-card">
                 <div class="question-title">Pesan / Kesan / Kritik / Saran / Masukan <span class="required-asterisk">*</span></div>
-                <input type="text" name="feedback" class="input-text" placeholder="Jawaban Anda" value="{{ old('feedback') }}" required>
+                <input type="text" name="feedback" class="input-text" placeholder="Isi pesan" value="{{ old('feedback') }}" required>
             </div>
 
             <!-- Tombol Submit & Reset -->
-            <div class="form-footer">
+            <div class="form-footer" style="padding: 20px; background: rgba(255, 255, 255, 0.8); border-radius: 5px">
                 <button type="submit" class="btn-submit">Kirim</button>
                 <button type="reset" class="btn-clear" onclick="window.location.href=window.location.href">Kosongkan formulir</button>
             </div>
 
         </form>
 
-        <div class="footer-text">
+        <div class="footer-text" style="padding: 20px; background: rgba(255, 255, 255, 0.8); border-radius: 5px">
             Jangan pernah mengirimkan sandi melalui Buku Tamu.
             <br><br>
             <h2 style="font-size: 22px; font-weight: normal; color: #5f6368;">Buku Tamu</h2>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WEB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GuestBook;
+use Illuminate\Support\Facades\File;
 
 class GuestBookController extends Controller
 {
@@ -13,7 +14,18 @@ class GuestBookController extends Controller
      */
     public function index()
     {
-        return view('guest-book.index');
+        $jsonPath = storage_path('app/json/officials.json');
+
+        if (File::exists($jsonPath)) {
+            $jsonContent = File::get($jsonPath);
+            // Data sekarang berisi array grup
+            $officialGroups = json_decode($jsonContent, true);
+        } else {
+            $officialGroups = [];
+        }
+
+        // Kita kirim variable $officialGroups ke view
+        return view('guest-book.index', compact('officialGroups'));
     }
 
     public function store(Request $request)
