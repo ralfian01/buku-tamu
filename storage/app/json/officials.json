@@ -1,0 +1,39 @@
+[
+    {
+        "group_name": "Kepala BKAD",
+        "items": [
+            { "id": 1, "name": "Kepala Badan Keuangan" }
+        ]
+    },
+    {
+        "group_name": "Bidang Sekretariat",
+        "items": [
+            { "id": 2, "name": "Sekretaris Badan Keuangan" },
+            { "id": 3, "name": "Kasubag Kepegawaian dan Umum" }
+        ]
+    },
+    {
+        "group_name": "Bidang Perencanaan Anggaran dan Perben",
+        "items": [
+            { "id": 4, "name": "Kepala Bidang Perencanaan dan Perbendaharaan Daerah" },
+            { "id": 5, "name": "Kasubid Penyusunan dan Pengelolaan Anggaran Daerah" },
+            { "id": 6, "name": "Kasubid Bidang Verfifikasi" }
+        ]
+    },
+    {
+        "group_name": "Bidang Akuntansi",
+        "items": [
+            { "id": 7, "name": "Kepala Bidang Akuntansi dan Pelaporan Keuangan Daerah" },
+            { "id": 8, "name": "Kasubid Akuntansi dan Pelaporan Penerimaan" },
+            { "id": 9, "name": "Kasubid Akuntansi dan Pelaporan Pengeluaran" }
+        ]
+    },
+    {
+        "group_name": "Bidang Aset",
+        "items": [
+            { "id": 10, "name": "Kepala Bidang Pengelolaan Barang Milik Daerah" },
+            { "id": 11, "name": "Sub Bidang Perencanaan Penatausahaan dan Pelaporan BMD" },
+            { "id": 12, "name": "Sub Bidang Pemanfaatan Pemindatanganan dan Pennghapusan BMD" }
+        ]
+    }
+]
